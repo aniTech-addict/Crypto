@@ -19,3 +19,31 @@ if response.status_code == 200:
     print("Data fetched successfully!")
 else:
     print("Error fetching data:", response.status_code)
+
+# Extract key details
+crypto_data = []
+for coin in data:
+    crypto_data.append({
+        "Name": coin["name"],
+        "Symbol": coin["symbol"].upper(),
+        "Price (USD)": coin["current_price"],
+        "Market Cap": coin["market_cap"],
+        "24h Volume": coin["total_volume"]
+    })
+
+# Convert to Pandas DataFrame
+df = pd.DataFrame(crypto_data)
+
+# Display table
+print(df)
+
+df.to_csv("crypto_prices.csv", index=False)
+print("Data saved to crypto_prices.csv ")
+
+# Read the saved CSV file
+df = pd.read_csv("crypto_prices.csv")
+
+# Sort cryptocurrencies by price (descending)
+df_sorted = df.sort_values(by="Price (USD)", ascending=False)
+
+print(df_sorted)
